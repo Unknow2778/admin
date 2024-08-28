@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.1.224:1234';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const GET = async (url: string,params?: Record<string, any> ) => {
     try {
