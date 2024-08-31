@@ -6,7 +6,7 @@ import React from 'react';
 function Dashboard() {
   const router = useRouter();
   return (
-    <div className='flex flex-col justify- items-center gap-2'>
+    <div className='flex flex-col  gap-2 p-2 w-full max-w-md h-full'>
       <h1>Dashboard</h1>
       <div
         onClick={() => router.push('addMarket')}

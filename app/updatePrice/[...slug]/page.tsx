@@ -12,6 +12,7 @@ interface Product {
   category: string;
   description: string;
   image: string;
+  imageURL: string; // Add this line
 }
 
 function addProductPrice() {
@@ -37,10 +38,11 @@ function addProductPrice() {
     const res = (await POST(`/markets/addProductPrice`, {
       productId: productId,
       marketName: slug[0],
-      price: 100,
+      price: updateProduct?.price,
     })) as any;
 
-    if (res.success) {
+    console.log(res);
+    if (res.status === 201) {
       toast.success('Product added successfully');
       setUpdateProduct({ productId: '', name: '' });
     } else {
@@ -51,7 +53,7 @@ function addProductPrice() {
 
   return (
     <div
-      className={`flex flex-col justify-center items-center h-screen ${
+      className={`flex flex-col justify-center items-center h-screen p-2 ${
         updateProduct.productId ? 'bg-black/20' : ''
       }`}
     >
@@ -63,6 +65,13 @@ function addProductPrice() {
             {updateProduct.name}
           </span>
           <input
+            value={updateProduct.price}
+            onChange={(e) =>
+              setUpdateProduct({
+                ...updateProduct,
+                price: e.target.value,
+              })
+            }
             className='bg-transparent border-2 border-lime-500 rounded-md p-2 outline-none'
             type='number'
             placeholder='Price'
@@ -83,16 +92,18 @@ function addProductPrice() {
           </div>
         </div>
       )}
-      <div className='flex  gap-2'>
+      <div className='flex flex-wrap gap-2'>
         {products.map((product) => (
           <div
             onClick={() =>
               setUpdateProduct({ productId: product._id, name: product.name })
             }
-            className='flex  p-2 border-2 border-lime-500 rounded-md'
-            key={product._id}
+            className='flex flex-col gap-2 border-2 border-lime-500 rounded-md p-2'
           >
-            {product.name}
+            <img className='w-20 h-20' src={product.imageURL} alt='' />
+            <div className='flex  p-2 rounded-md' key={product._id}>
+              {product.name}
+            </div>
           </div>
         ))}
       </div>

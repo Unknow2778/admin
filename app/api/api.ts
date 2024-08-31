@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestHeaders } from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -11,16 +11,19 @@ export const GET = async (url: string,params?: Record<string, any> ) => {
     }
     };
 
-export const POST = async (url: string, data: any) => {
-    try {
-        const response = await axios.post(API_URL + url, data);
-        return response;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return error.response || 'An unknown error occurred';
-        } else {
-            console.error('Unexpected error', error);
-            return 'An unexpected error occurred';
-        }
+
+export const POST = async (url: string, data: any, headers?: AxiosRequestHeaders) => {
+  try {
+    const response = await axios.post(API_URL + url, data, {
+      headers: headers || {},  
+    });
+    return response;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return error.response || 'An unknown error occurred';
+    } else {
+      console.error('Unexpected error', error);
+      return 'An unexpected error occurred';
     }
+  }
 };
